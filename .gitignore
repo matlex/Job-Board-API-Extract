@@ -45,7 +45,7 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-*secrets/*
+secrets.py
 output.csv
 cookies.json
 
