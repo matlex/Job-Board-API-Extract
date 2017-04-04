@@ -61,6 +61,8 @@ class WorkableAPIClient:
 
 
 def main():
+    print("Process started >>>")
+
     workable_client = WorkableAPIClient()
     wk_jobs = workable_client.get_jobs()
 
@@ -195,6 +197,8 @@ def main():
                 pass
             # Save candidate instance to update it's data
             candidate_obj.save()
+
+    print("Finished successfully.")
 
 if __name__ == '__main__':
     main()
