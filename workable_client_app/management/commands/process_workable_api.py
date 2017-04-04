@@ -82,7 +82,9 @@ def main():
             wk_candidate_data = workable_client.get_candidate_info(job['shortcode'], candidate['id'])
             # print(json.dumps(wk_candidate_data))
 
+            # When candidate profile updated the updated_at date field is also updating.
             # We will track whether candidate data was updated or not since last check.
+
             wk_candidate_updated_at = wk_candidate_data['updated_at']
             # wk_candidate_updated_at = datetime.datetime.strptime(wk_candidate_updated_at[:-1], "%Y-%m-%dT%H:%M:%S")
 
