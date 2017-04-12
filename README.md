@@ -13,7 +13,10 @@ Run: **sudo apt-get install python-dev libmysqlclient-dev**
 4. Go to main application's directory and run **pip install -r requirements.txt**
 5. Generate a new secret key for Django project - http://www.miniwebtool.com/django-secret-key-generator/
 6. Go to the 'secrets' directory and rename "secrets_template.py" file to "secrets.py" file and fill in ALL constants properly.
-7. Now we need create new database migrations. You need to create migrations for every app. At the moment run: **python manage.py makemigrations workable_api**
+7. Now we need create new database migrations. 
+First run: python manage.py makemigrations to create migrations for django internal apps. 
+Then you need to create migrations for every app. 
+At the moment run: **python manage.py makemigrations workable_api**
 8. Then apply newly created migrations: **python manage.py migrate**
 9. Create a Django admin by running command: **python manage.py createsuperuser**
 10. Launch application django-admin panel by running command **python manage.py runserver 0.0.0.0:8000**
