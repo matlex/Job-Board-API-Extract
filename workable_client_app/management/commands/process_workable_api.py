@@ -8,6 +8,7 @@ from urllib.parse import urljoin
 import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "workable_api.settings")
 django.setup()
+from django.core.management.base import BaseCommand
 
 from workable_api.secrets.secrets import *
 from workable_client_app.models import *
@@ -199,6 +200,18 @@ def main():
             candidate_obj.save()
 
     print("Finished successfully.")
+
+
+class Command(BaseCommand):
+    help = 'To start the program run "python manage.py process_workable_api" command'
+
+    def add_arguments(self, series_metrics):
+        series_metrics.description = "Connects to JOB Board API(rossi-motors project), collects jobs and CV's data, " \
+                                     "saves results into DataBase."
+
+    def handle(self, *args, **options):
+        main()
+
 
 if __name__ == '__main__':
     main()
