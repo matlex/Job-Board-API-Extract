@@ -9,7 +9,7 @@ You should have working database server (MySQL or PostgreSQL) with created datab
 1. Create a clean virtual environment and activate it.
 2. Install MySQLdb Client to a system. 
 Run: **sudo apt-get install python-dev libmysqlclient-dev**
-3. Run: **sudo apt-get install build-essential libssl-dev libffi-dev python-dev**
+3. Run: **sudo apt-get install build-essential libssl-dev libffi-dev python-dev python3-dev**
 4. Go to main application's directory and run **pip install -r requirements.txt**
 5. Generate a new secret key for Django project - http://www.miniwebtool.com/django-secret-key-generator/
 6. Go to the 'secrets' directory and rename "secrets_template.py" file to "secrets.py" file and fill in ALL constants properly.
