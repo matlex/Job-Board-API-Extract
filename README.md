@@ -3,7 +3,7 @@ This is code that extracts Job and Candidate info using the Workable API
 
 ## Prerequisites ##
 Python 3
-Virtual environment also should be with python 3
+Virtual environment also should be created and activated with python 3 interpreter.
 You should have working database server (MySQL or PostgreSQL) with created database.
 
 
