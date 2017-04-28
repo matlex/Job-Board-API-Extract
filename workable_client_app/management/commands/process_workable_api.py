@@ -17,9 +17,9 @@ from workable_client_app.models import *
 # Workable API Client
 class WorkableAPIClient:
     def __init__(self):
-        self.subdomain = 'rossi-motors'
+        self.subdomain = WORKABLE_DOMAIN
         self.root_endpoint = 'https://www.workable.com/spi/v3/accounts/'
-        self.auth_token = 'Bearer {}'.format(API_TOKEN)
+        self.auth_token = 'Bearer {}'.format(WORKABLE_API_TOKEN)
 
     def get_response(self, endpoint):
         headers = {'Authorization': self.auth_token, 'Content-Type': 'application/json'}

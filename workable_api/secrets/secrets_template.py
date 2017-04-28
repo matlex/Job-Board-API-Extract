@@ -1,5 +1,6 @@
 # Workable API Credentials
-API_TOKEN = 'some job board api token'
+WORKABLE_API_TOKEN = 'some job board api token'
+WORKABLE_DOMAIN = 'some workable domain to use'
 
 SECRET_KEY = 'some super secret key'  # http://www.miniwebtool.com/django-secret-key-generator/
 
