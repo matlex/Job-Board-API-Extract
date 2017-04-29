@@ -6,7 +6,7 @@ from .models import *
 
 @register(Candidate)
 class CandidateAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'job', 'status']
+    list_display = ['__str__', 'job', 'status', 'phone', 'email']
 
 
 @register(Job)
