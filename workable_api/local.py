@@ -7,6 +7,8 @@ SECRET_KEY = SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+DEBUG_LEVEL = 'INFO'  # 'DEBUG', 'INFO', 'ERROR', 'WARNING'
+
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 

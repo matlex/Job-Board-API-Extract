@@ -113,3 +113,71 @@ if not socket.gethostname() in HOSTS:
     from .remote import *
 else:
     from .local import *
+
+
+# Logging configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue'
+        }
+    },
+    'formatters': {
+        'main_formatter': {
+            'format': '%(levelname)s:%(name)s: %(message)s '
+                      '(%(asctime)s; %(filename)s:%(lineno)d)',
+            'datefmt': "%Y-%m-%d %H:%M:%S",
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': DEBUG_LEVEL,
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'main_formatter',
+        },
+        'production_file': {
+            'level': DEBUG_LEVEL,  # Can be hardcoded by default as 'INFO'
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/main.log'),
+            'maxBytes': 1024 * 1024 * 5,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'main_formatter',
+            'filters': ['require_debug_false'],
+        },
+        'debug_file': {
+            'level': DEBUG_LEVEL,  # Can be hardcoded by default as 'DEBUG'
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/main_debug.log'),
+            'maxBytes': 1024 * 1024 * 5,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'main_formatter',
+            'filters': ['require_debug_true'],
+        },
+        'null': {
+            "class": 'logging.NullHandler',
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django': {
+            'handlers': ['null', ],
+        },
+        'py.warnings': {
+            'handlers': ['null', ],
+        },
+        '': {
+            'handlers': ['console', 'production_file', 'debug_file'],
+            'level': DEBUG_LEVEL  # Can be hardcoded by default as "INFO"
+        },
+    }
+}
