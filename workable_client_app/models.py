@@ -7,24 +7,39 @@ class Job(models.Model):
     department = models.CharField(max_length=255, null=True)
     wk_short_code = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.title
+
 
 class Status(models.Model):
     """Same as stage in candidate json output"""
     title = models.CharField(max_length=150)
 
+    def __str__(self):
+        return self.title
+
 
 class Skill(models.Model):
     title = models.CharField(max_length=150)
 
+    def __str__(self):
+        return self.title
+
 
 class Tag(models.Model):
     title = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.title
 
 
 class SocialProfile(models.Model):
     type = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     url = models.URLField()
+
+    def __str__(self):
+        return self.name
 
 
 class WorkExperience(models.Model):
@@ -71,4 +86,4 @@ class Candidate(models.Model):
     education = models.ManyToManyField(Education)
 
     def __str__(self):
-        return "{} {} - {}".format(self.first_name, self.last_name, self.job.title)
+        return "{} {}".format(self.first_name, self.last_name)
