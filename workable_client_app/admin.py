@@ -14,6 +14,6 @@ class JobAdmin(admin.ModelAdmin):
     list_display = ['title', 'full_title', 'department', 'wk_short_code']
 
 
-@register(JobTimeline)
-class JobTimelineAdmin(admin.ModelAdmin):
-    list_display = ['job', 'action', 'stage_name', 'member_name', 'created_at']
+@register(CandidateTimeline)
+class CandidateTimelineAdmin(admin.ModelAdmin):
+    list_display = ['__str__', 'action', 'stage_name', 'member_name', 'created_at']

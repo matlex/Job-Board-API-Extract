@@ -89,21 +89,21 @@ class Candidate(models.Model):
         return "{} {}".format(self.first_name, self.last_name)
 
 
-class JobTimelineAction(models.Model):
+class TimelineAction(models.Model):
     title = models.CharField(max_length=64)
 
     def __str__(self):
         return self.title
 
 
-class JobTimelineStage(models.Model):
+class TimelineStage(models.Model):
     title = models.CharField(max_length=64, null=True)
 
     def __str__(self):
         return self.title if self.title else ""
 
 
-class JobTimelineMember(models.Model):
+class TimelineMember(models.Model):
     wk_member_id = models.CharField(max_length=32, unique=True)
     name = models.CharField(max_length=255)
 
@@ -114,11 +114,24 @@ class JobTimelineMember(models.Model):
 class JobTimeline(models.Model):
     # action, stage name, created_at, member_name, and body
     job = models.ForeignKey(Job, related_name='activities')
-    action = models.ForeignKey(JobTimelineAction)
-    stage_name = models.ForeignKey(JobTimelineStage)
-    member_name = models.ForeignKey(JobTimelineMember)
+    action = models.ForeignKey(TimelineAction)
+    stage_name = models.ForeignKey(TimelineStage)
+    member_name = models.ForeignKey(TimelineMember)
     body = models.CharField(max_length=3000, null=True)
     created_at = models.DateTimeField()
 
     def __str__(self):
         return "{} {} {}".format(self.action, self.member_name, self.created_at)
+
+
+class CandidateTimeline(models.Model):
+    # action, stage name, created_at, member_name, and body
+    candidate = models.ForeignKey(Candidate, related_name='activities')
+    action = models.ForeignKey(TimelineAction)
+    stage_name = models.ForeignKey(TimelineStage)
+    member_name = models.ForeignKey(TimelineMember)
+    body = models.CharField(max_length=3000, null=True)
+    created_at = models.DateTimeField()
+
+    def __str__(self):
+        return "{}".format(self.candidate)
