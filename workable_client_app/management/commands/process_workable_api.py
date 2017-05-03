@@ -62,6 +62,11 @@ class WorkableAPIClient:
         resp = self.get_response(api_endpoint)
         return resp['candidate']
 
+    def get_job_activities(self, job_shortcode):
+        api_endpoint = '{subdomain}/jobs/{job_shortcode}/activities'.format(subdomain=self.subdomain, job_shortcode=job_shortcode)
+        resp = self.get_response(api_endpoint)
+        return resp['activities']
+
 
 def main():
     try:
@@ -90,7 +95,6 @@ def main():
                 # Get candidate's full data
                 wk_candidate_data = workable_client.get_candidate_info(job['shortcode'], candidate['id'])
                 # print(json.dumps(wk_candidate_data))
-
                 logger.info("Processing candidate: {} {}, ID: {}".format(
                     wk_candidate_data['firstname'], wk_candidate_data['lastname'], wk_candidate_data['id']))
 
@@ -210,6 +214,30 @@ def main():
                 # Save candidate instance to update it's data
                 candidate_obj.save()
                 logger.info("Candidate: {} {} proceed successfully.".format(candidate_obj.first_name, candidate_obj.last_name))
+
+            # Collect & save Job's Timeline
+            job_activities = workable_client.get_job_activities(job['shortcode'])
+            for activity in job_activities:
+                timeline_action_obj = JobTimelineAction.objects.get_or_create(title=activity['action'])[0]
+                timeline_stage_obj = JobTimelineStage.objects.get_or_create(title=activity['stage_name'])[0]
+                try:
+                    timeline_member_obj = JobTimelineMember.objects.get(wk_member_id=activity['member']['id'])
+                    timeline_member_obj.name = activity['member']['name']
+                    timeline_member_obj.save()
+                except JobTimelineMember.DoesNotExist:
+                    timeline_member_obj = JobTimelineMember.objects.create(
+                        wk_member_id=activity['member']['id'],
+                        name=activity['member']['name']
+                    )
+                JobTimeline.objects.get_or_create(
+                    job=job_obj,
+                    action=timeline_action_obj,
+                    stage_name=timeline_stage_obj,
+                    member_name=timeline_member_obj,
+                    body=activity['body'],
+                    created_at=activity['created_at']
+                )
+            logger.info("Job Timeline successfully proceeded.")
 
         logger.info("Total old candidates proceeded: {}".format(old_candidates_processed))
         logger.info("Total new candidates proceeded: {}".format(new_candidates_processed))
