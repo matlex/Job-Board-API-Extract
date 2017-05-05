@@ -23,16 +23,22 @@ class WorkableAPIClient:
         self.root_endpoint = 'https://www.workable.com/spi/v3/accounts/'
         self.auth_token = 'Bearer {}'.format(WORKABLE_API_TOKEN)
 
-    def get_response(self, endpoint):
+    def get_response(self, endpoint, query_params=None):
         headers = {'Authorization': self.auth_token, 'Content-Type': 'application/json'}
         url = urljoin(self.root_endpoint, endpoint)
-        r = requests.get(url, headers=headers)
+        r = requests.get(url, headers=headers, params=query_params)
         return r.json()
 
     def test_api(self):
         """Call to / endpoint"""
         resp = self.get_response('')
         print(resp)
+
+    def get_events(self):
+        api_endpoint = 'https://{subdomain}.workable.com/spi/v3/events'.format(subdomain=self.subdomain)
+        query_params = {'shortcode': '125CFA4F51'}
+        resp = self.get_response(api_endpoint, query_params)
+        return resp['events']
 
     def get_jobs(self):
         api_endpoint = '{subdomain}/jobs'.format(subdomain=self.subdomain)
@@ -98,6 +104,7 @@ class WorkableAPIClient:
 
     def process_candidate_activities(self, candidate_id, candidate_obj):
         candidate_activities = self.get_candidate_activities(candidate_id)
+        print(candidate_activities)
         for activity in candidate_activities:
             timeline_action_obj = TimelineAction.objects.get_or_create(title=activity['action'])[0]
             timeline_stage_obj = TimelineStage.objects.get_or_create(title=activity['stage_name'])[0]
@@ -127,10 +134,10 @@ def main():
 
         workable_client = WorkableAPIClient()
         wk_jobs = workable_client.get_jobs()
+
         new_candidates_processed = 0
         old_candidates_processed = 0
         total_candidates_updated = 0
-
         # Find and iterate over each job
         for job in wk_jobs:
             # Add Job data into DB
@@ -147,7 +154,7 @@ def main():
             for candidate in wk_candidates:
                 # Get candidate's full data
                 wk_candidate_data = workable_client.get_candidate_info(job['shortcode'], candidate['id'])
-                # print(json.dumps(wk_candidate_data))
+
                 logger.info("Processing candidate: {} {}, ID: {}".format(
                     wk_candidate_data['firstname'], wk_candidate_data['lastname'], wk_candidate_data['id']))
 
@@ -159,6 +166,9 @@ def main():
 
                 try:
                     candidate_obj = Candidate.objects.get(wk_id=wk_candidate_data['id'])
+                    workable_client.process_candidate_activities(wk_candidate_data['id'], candidate_obj)
+                    print(workable_client.get_events())
+                    input()
                     # If candidate with 'id' exists then we need to check was it updated or no
                     # If it was updated then just update all candidate's data
                     old_candidates_processed += 1

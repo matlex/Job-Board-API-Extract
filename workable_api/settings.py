@@ -116,6 +116,8 @@ else:
 
 
 # Logging configuration
+LOGFILE_NAME = 'workable-sync.log'
+LOGFILE_DEBUG_NAME = 'workable-sync.log'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -144,7 +146,7 @@ LOGGING = {
         'production_file': {
             'level': DEBUG_LEVEL,  # Can be hardcoded by default as 'INFO'
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs/main.log'),
+            'filename': os.path.join(BASE_DIR, 'logs/{}'.format(LOGFILE_NAME)),
             'maxBytes': 1024 * 1024 * 5,  # 5 MB
             'backupCount': 5,
             'formatter': 'main_formatter',
@@ -153,7 +155,7 @@ LOGGING = {
         'debug_file': {
             'level': DEBUG_LEVEL,  # Can be hardcoded by default as 'DEBUG'
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs/main_debug.log'),
+            'filename': os.path.join(BASE_DIR, 'logs/{}'.format(LOGFILE_DEBUG_NAME)),
             'maxBytes': 1024 * 1024 * 5,  # 5 MB
             'backupCount': 5,
             'formatter': 'main_formatter',

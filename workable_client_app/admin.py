@@ -16,4 +16,4 @@ class JobAdmin(admin.ModelAdmin):
 
 @register(CandidateTimeline)
 class CandidateTimelineAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'action', 'stage_name', 'member_name', 'created_at']
+    list_display = ['__str__', 'action', 'stage_name', 'member_name', 'created_at', 'body']
